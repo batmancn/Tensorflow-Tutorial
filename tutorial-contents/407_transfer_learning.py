@@ -10,10 +10,10 @@ Tiger - Normal distribution (100, 30)
 The VGG model and parameters are adopted from:
 https://github.com/machrisaa/tensorflow-vgg
 
-Learn more, visit my tutorial site: [莫烦Python](https://morvanzhou.github.io)
 """
 
-from urllib.request import urlretrieve
+#from urllib.request import urlretrieve
+import urllib
 import os
 import numpy as np
 import tensorflow as tf
@@ -31,7 +31,7 @@ def download():     # download tiger and kittycat image
             n_urls = len(urls)
             for i, url in enumerate(urls):
                 try:
-                    urlretrieve(url.strip(), './for_transfer_learning/data/%s/%s' % (category, url.strip().split('/')[-1]))
+                    urllib.urlretrieve(url.strip(), './for_transfer_learning/data/%s/%s' % (category, url.strip().split('/')[-1]))
                     print('%s %i/%i' % (category, i, n_urls))
                 except:
                     print('%s %i/%i' % (category, i, n_urls), 'no image')
@@ -78,7 +78,7 @@ class Vgg16:
         # pre-trained parameters
         try:
             self.data_dict = np.load(vgg16_npy_path, encoding='latin1').item()
-        except FileNotFoundError:
+        except IOError:
             print('Please download VGG16 parameters from here https://mega.nz/#!YU1FWJrA!O1ywiCS2IiOlUCtCpI6HTJOMrneN-Qdv3ywQP5poecM\nOr from my Baidu Cloud: https://pan.baidu.com/s/1Spps1Wy0bvrQHH2IMkRfpg')
 
         self.tfx = tf.placeholder(tf.float32, [None, 224, 224, 3])
